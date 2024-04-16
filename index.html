@@ -5,6 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Tirano Tech</title>
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
     <style>
         body {
             background: linear-gradient(to bottom right, #2c3e50, #bdc3c7);
@@ -64,6 +65,21 @@
             margin-top: 50px;
             text-align: center;
         }
+
+        #apod {
+            margin-top: 50px;
+            text-align: center;
+        }
+
+        #apod img {
+            max-width: 100%;
+            border-radius: 10px;
+            margin-top: 20px;
+        }
+
+        #apod p {
+            margin-top: 20px;
+        }
     </style>
 </head>
 <body>
@@ -77,7 +93,7 @@
                     <p>Caros programadores, sabemos que enfrentar bugs pode ser como tentar encontrar uma agulha em um palheiro... um palheiro que é um pouco maior do que o universo conhecido!</p>
                     <p>Mas não desanimem! Lembrem-se sempre: se codificar fosse fácil, as ovelhas teriam aprendido a fazer isso enquanto pastam nos campos. Então, mantenham a calma, bebam um pouco de café (ou chá, se preferirem), e continuem codificando!</p>
                     <p>Lembre-se sempre do lema dos verdadeiros programadores: "Não é um bug, é um recurso inesperado!"</p>
-                    <button id="call-to-action">Codificar com Tirano Tech</button>
+                    <a id="call-to-action" href="https://www.youtube.com/channel/UCE_bKGzB4dweqdDHxRhhyVA" target="_blank">Codificar com Tirano Tech</a>
                 </div>
             </div>
         </div>
@@ -94,6 +110,44 @@
         </script>
         <script type="text/javascript" src="//www.topcreativeformat.com/02fb702dc8307b226c051b9c8a5afdc4/invoke.js"></script>
     </div>
+    <div id="apod">
+        <img id="apod-img" src="" alt="Imagem do dia da NASA">
+        <p id="apod-descricao"></p>
+    </div>
+    <script>
+        // Função para traduzir o texto usando a API do Google Translate
+        function traduzirTexto(texto, idiomaOrigem, idiomaDestino, callback) {
+            $.ajax({
+                url: 'https://translation.googleapis.com/language/translate/v2',
+                method: 'POST',
+                contentType: 'application/json',
+                data: JSON.stringify({
+                    q: texto,
+                    source: idiomaOrigem,
+                    target: idiomaDestino,
+                    format: 'text'
+                }),
+                success: function(response) {
+                    callback(response.data.translations[0].translatedText);
+                },
+                error: function(error) {
+                    console.error('Ocorreu um erro ao traduzir o texto:', error);
+                }
+            });
+        }
+
+        // Requisição à API da NASA para a imagem do dia
+        fetch('https://api.nasa.gov/planetary/apod?api_key=sEF3fAW2lhvugZrIfMalEP4KMNe5SIhjj4X9QOZb')
+            .then(response => response.json())
+            .then(data => {
+                document.getElementById('apod-img').src = data.url;
+                traduzirTexto(data.explanation, 'en', 'pt', function(traducao) {
+                    document.getElementById('apod-descricao').innerText = traducao;
+                });
+            })
+            .catch(error => console.error('Ocorreu um erro ao obter os dados da API da NASA:', error));
+    </script>
 </body>
 </html>
+
 
