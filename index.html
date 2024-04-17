@@ -97,6 +97,54 @@
     </style>
 </head>
 <body>
+    <!-- Banner de Consentimento -->
+<div id="consentBanner" style="position: fixed; bottom: 0; left: 0; width: 100%; background-color: #f0f0f0; padding: 10px; text-align: center;">
+    <p>Nós usamos cookies para melhorar sua experiência. Aceita o uso de cookies?</p>
+    <button onclick="aceitarConsentimento()">Aceitar</button>
+    <button onclick="recusarConsentimento()">Recusar</button>
+</div>
+
+<!-- Script Google Analytics -->
+<script>
+    // Função para ativar o Google Analytics
+    function ativarGoogleAnalytics() {
+        // Substitua 'UA-XXXXXXXXX-X' pelo seu ID de acompanhamento do Google Analytics
+        window['ga-disable-G-F1XBHZE4X2'] = false;
+
+        // Insira aqui o código de rastreamento do Google Analytics
+        // Exemplo: 
+        //   ga('create', 'UA-XXXXXXXXX-X', 'auto');
+        //   ga('send', 'pageview');
+    }
+
+    // Função para desativar o Google Analytics
+    function desativarGoogleAnalytics() {
+        window['ga-disable-G-F1XBHZE4X2'] = true; // Substitua 'UA-XXXXXXXXX-X' pelo seu ID de acompanhamento do Google Analytics
+    }
+
+    // Função para aceitar o consentimento
+    function aceitarConsentimento() {
+        ativarGoogleAnalytics();
+        document.getElementById('consentBanner').style.display = 'none';
+    }
+
+    // Função para recusar o consentimento
+    function recusarConsentimento() {
+        desativarGoogleAnalytics();
+        document.getElementById('consentBanner').style.display = 'none';
+    }
+
+    // Verifica se o usuário já deu consentimento anteriormente
+    // Se sim, ativa o Google Analytics, caso contrário, exibe o banner de consentimento
+    window.onload = function() {
+        var consentimentoAceito = localStorage.getItem('consentimento_aceito');
+        if (consentimentoAceito) {
+            ativarGoogleAnalytics();
+        } else {
+            document.getElementById('consentBanner').style.display = 'block';
+        }
+    };
+</script>
     <div class="container">
         <div class="row">
             <div class="col-12 text-center">
